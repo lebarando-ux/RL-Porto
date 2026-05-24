@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#050505">
+    <meta name="color-scheme" content="dark">
+    <meta name="description"
+        content="RL Creative Consultant — Premium post-production engineering, broadcast standards, and full-stack AI media workflows.">
+
+    <meta property="og:title" content="RL Creative Consultant">
+    <meta property="og:description" content="Integrating broadcast standards with intelligent Agentic AI automation.">
+    <meta property="og:image" content="/preview.jpg">
+    <meta property="og:type" content="website">
+
+    <title>RL Creative Consultant</title>
+
+    <!-- Google Fonts: Inter & Space Grotesk for Agency Aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#050505',
+                        brandCard: '#0d0d0d',
+                        brandAccent: '#a855f7'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Space Grotesk', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Mouse Glow Styling */
+        #mouse-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            background: radial-gradient(800px at var(--mouse-x, 50vw) var(--mouse-y, 50vh), rgba(168, 85, 247, 0.09), transparent 80%);
+            transition: opacity 0.3s ease;
+        }
+
+        /* Responsive line breaks: strip breaks on mobile */
+        @media (max-width: 640px) {
+
+            #hero-title br,
+            #contact-title br {
+                display: none;
+            }
+
+            #mouse-glow {
+                display: none;
+                /* Disable mouse glow on touch-only devices for performance */
+            }
+        }
+
+        /* Subtle grid border overlay */
+        .grid-line {
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased bg-brandDark text-white selection:bg-purple-500 selection:text-white">
+
+    <!-- Chatbot Widget inside Body for valid HTML5 and pointer events execution -->
+    <button id="riley-launcher"
+        class="fixed bottom-6 right-6 z-[60] bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-4 rounded-full shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:rotate-12 transition-transform" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+        <span
+            class="text-xs font-mono tracking-widest uppercase max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-in-out">Chat
+            With RiLey</span>
+    </button>
+
+    <div id="riley-window"
+        class="fixed bottom-24 right-6 w-[90vw] sm:w-[400px] h-[500px] bg-[#0d0d0d] border border-white/10 rounded-2xl shadow-2xl z-[60] flex flex-col opacity-0 translate-y-4 pointer-events-none transition-all duration-300 backdrop-blur-xl">
+        <div class="p-4 border-b border-white/10 bg-black/40 flex items-center justify-between rounded-t-2xl">
+            <div class="flex items-center gap-3">
+                <div class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></div>
+                <div>
+                    <h4 class="text-sm font-bold tracking-tight text-white">RiLey</h4>
+                    <span class="text-[10px] font-mono text-gray-400 uppercase tracking-wider">RL Executive AI
+                        Assistant</span>
+                </div>
+            </div>
+            <button id="riley-close"
+                class="text-gray-500 hover:text-white transition-colors cursor-pointer text-xl font-bold">&times;</button>
+        </div>
+
+        <div id="riley-messages" class="flex-1 overflow-y-auto p-4 space-y-4 text-sm no-scrollbar">
+            <div class="flex flex-col bg-white/5 rounded-xl p-3 max-w-[85%] text-gray-300">
+                <p id="riley-initial-text">Hello. I am <strong>RiLey</strong>, the Executive AI Assistant for RL
+                    Creative Consultant. How can I assist you with your post-production pipeline or creative strategy
+                    today?</p>
+                <span id="riley-initial-meta" class="text-[9px] font-mono text-purple-400 mt-2">RiLey • Just now</span>
+            </div>
+        </div>
+
+        <form id="riley-form" class="p-4 border-t border-white/10 bg-black/20 flex gap-2 rounded-b-2xl">
+            <input type="text" id="riley-input" placeholder="Ask RiLey about pipelines, budget, or bookings..."
+                class="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
+                autocomplete="off" />
+            <button type="submit"
+                class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-mono uppercase tracking-wider transition-colors cursor-pointer">Send</button>
+        </form>
+    </div>
+
+    <!-- Interactive Mouse Glow -->
+    <div id="mouse-glow"></div>
+
+    <!-- Grid Line Overlay Background for Agency Texture -->
+    <div class="fixed inset-0 grid-line pointer-events-none opacity-40 z-0"></div>
+
+    <!-- Navbar (Optimized Height & Sizing for Mobile Safety) -->
+    <header
+        class="fixed top-0 left-0 right-0 z-50 bg-brandDark/85 backdrop-blur-md border-b border-white/5 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 h-20 md:h-24 flex items-center justify-between">
+
+            <!-- Elevated Monogram Logo & Name -->
+            <a href="#home" class="flex items-center gap-3 sm:gap-4 group">
+                <img src="rl-logo.png" alt="RL Monogram"
+                    class="h-8 sm:h-11 w-auto invert select-none transition-transform duration-500 group-hover:rotate-6" />
+                <div class="flex flex-col">
+                    <span class="text-lg sm:text-2xl font-black tracking-tighter text-white leading-none">RL</span>
+                    <span
+                        class="text-[8px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.25em] text-purple-400 uppercase leading-none mt-1 sm:mt-1.5 transition-colors group-hover:text-white">Creative
+                        Consultant</span>
+                </div>
+            </a>
+
+            <!-- Navigation Controls -->
+            <div class="flex items-center gap-3 sm:gap-6">
+                <button id="btn-lang"
+                    class="text-[10px] sm:text-xs font-mono tracking-widest uppercase border border-white/10 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full hover:bg-white hover:text-black transition-all duration-300 select-none">
+                    EN / ID
+                </button>
+                <a href="#contact"
+                    class="hidden md:inline-block text-xs font-mono uppercase tracking-widest bg-white text-black px-6 py-3 rounded-full font-bold hover:bg-purple-500 hover:text-white transition-all duration-300 shadow-md">
+                    Get In Touch
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="relative z-10">
+
+        <!-- Hero Section (Mobile First Adjustments) -->
+        <section id="home"
+            class="relative pt-36 sm:pt-48 pb-20 sm:pb-32 px-4 sm:px-6 overflow-hidden min-h-[85vh] sm:min-h-[90vh] flex flex-col justify-center">
+            <div class="max-w-6xl mx-auto w-full relative z-10">
+                <h1 id="hero-title"
+                    class="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.05] sm:leading-[1.02] mb-6 sm:mb-8 text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-400">
+                    Integrating Broadcast Standards<br class="hidden sm:inline">with Agentic AI Automation.
+                </h1>
+                <p id="hero-subtitle"
+                    class="text-xs sm:text-sm md:text-lg font-mono text-zinc-400 tracking-wider mb-10 sm:mb-14 max-w-4xl leading-relaxed">
+                    RL Creative Consultant • A Decade of Television Experience • Full-Stack Media Specialist
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#portfolio" id="hero-btn-work"
+                        class="w-full sm:w-auto text-center text-xs font-mono uppercase tracking-widest bg-purple-600 text-white px-6 py-4 sm:px-8 sm:py-5 rounded-full font-bold hover:bg-purple-700 transition-all duration-300 shadow-lg shadow-purple-600/30">
+                        Examine My Frameworks
+                    </a>
+                    <a href="#contact" id="hero-btn-cta"
+                        class="w-full sm:w-auto text-center text-xs font-mono uppercase tracking-widest border border-white/20 px-6 py-4 sm:px-8 sm:py-5 rounded-full font-bold hover:bg-white/5 transition-all duration-300">
+                        Optimize Your Pipeline
+                    </a>
+                </div>
+            </div>
+            <!-- Atmospheric purple light behind hero -->
+            <div
+                class="absolute top-1/3 -right-1/4 w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[160px] -z-10 pointer-events-none">
+            </div>
+        </section>
+
+        <!-- Philosophy Section (Restored, Enhanced, and Mobile-Optimized) -->
+        <section id="philosophy"
+            class="py-20 sm:py-28 px-4 sm:px-6 border-t border-white/5 bg-black/30 relative overflow-hidden">
+            <div
+                class="absolute -top-1/4 left-1/4 w-[400px] h-[400px] bg-purple-900/5 rounded-full blur-[120px] pointer-events-none">
+            </div>
+
+            <div class="max-w-4xl mx-auto relative z-10">
+                <div class="flex flex-col gap-6 md:gap-8">
+                    <span class="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-purple-400">Our Core
+                        Philosophy</span>
+                    <blockquote class="border-l border-purple-500 pl-4 sm:pl-8">
+                        <p id="about-title"
+                            class="text-xl sm:text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-6 sm:mb-8 text-white">
+                            Elevating brands through visual rhythm.
+                        </p>
+                        <p id="about-desc"
+                            class="text-sm sm:text-base md:text-xl text-zinc-400 leading-relaxed font-light">
+                            With over a decade of experience across commercial, documentary, and digital platforms, we
+                            specialize in architecting narratives that demand attention. We don't just cut footage, we
+                            sculpt emotions, rhythm, and visual identity.
+                        </p>
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section -->
+        <section id="portfolio" class="py-20 sm:py-28 px-4 sm:px-6 border-t border-white/5 bg-black/60">
+            <div class="max-w-7xl mx-auto">
+
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-8 mb-14 sm:mb-20">
+                    <div>
+                        <span class="text-xs font-mono uppercase tracking-widest text-purple-400">Featured Work.</span>
+                        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mt-2 sm:mt-3">Showcase</h2>
+                    </div>
+                    <!-- Swipeable filter categories scroll grid for neat mobile display -->
+                    <div id="filter-tabs"
+                        class="flex items-center gap-3 overflow-x-auto no-scrollbar py-1 w-full md:w-auto -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0">
+                    </div>
+                </div>
+
+                <!-- Custom Hover Double-Fade Interactive Grid (Tap friendly, mobile responsive gap) -->
+                <div id="projects-grid"
+                    class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-10 transition-all duration-500">
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 sm:py-32 px-4 sm:px-6 border-t border-white/5 bg-brandDark relative">
+            <div class="max-w-4xl mx-auto text-center">
+                <span class="text-xs font-mono uppercase tracking-widest text-purple-400">Next-Gen Workflows</span>
+                <h2 id="contact-title"
+                    class="text-2xl sm:text-4xl md:text-6xl font-bold tracking-tight whitespace-pre-line mt-3 sm:mt-4 mb-10 sm:mb-14 leading-[1.1]">
+                    Let's Architect an Efficient<br class="hidden sm:inline">Post-Production System.
+                </h2>
+
+                <div
+                    class="inline-block bg-brandCard border border-white/10 p-6 sm:p-8 md:p-12 rounded-2xl max-w-xl w-full text-left shadow-2xl relative overflow-hidden group">
+                    <div
+                        class="absolute -top-12 -right-12 w-24 h-24 bg-purple-500/10 rounded-full blur-[30px] transition-all duration-500 group-hover:scale-150">
+                    </div>
+
+                    <h3 id="form-title" class="text-lg sm:text-xl font-bold mb-2">Consultation Request</h3>
+                    <p class="text-xs sm:text-sm text-zinc-400 font-mono mb-6 sm:mb-8">Direct access channel to
+                        enterprise Visual Engineering.</p>
+
+                    <div class="space-y-4">
+                        <!-- Direct Hardcoded Email lebarando@gmail.com -->
+                        <a href="mailto:lebarando@gmail.com"
+                            class="block text-center text-xs font-mono uppercase tracking-widest bg-white text-black font-bold py-4 sm:py-5 rounded-lg hover:bg-purple-500 hover:text-white transition-all duration-300 select-none shadow-md">
+                            Secure a Slot via Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-12 sm:py-16 px-4 sm:px-6 bg-black relative z-20">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
+
+            <!-- Authoritative Footer Logo -->
+            <div class="flex items-center gap-3 sm:gap-4">
+                <img src="rl-logo.png" alt="RL Monogram" class="h-7 sm:h-9 w-auto invert select-none" />
+                <div class="flex flex-col">
+                    <span class="text-lg sm:text-xl font-black tracking-tighter text-white leading-none">RL</span>
+                    <span
+                        class="text-[8px] sm:text-[9px] font-bold tracking-[0.2em] text-zinc-500 uppercase leading-none mt-1">Creative
+                        Consultant</span>
+                </div>
+            </div>
+
+            <p class="text-[10px] sm:text-xs font-mono text-zinc-600 text-center md:text-right">
+                &copy; 2026 RL Creative Consultant. Built for High-Performance Architectures.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Interactive Logic & Data Engines -->
+    <script>
+        // Smooth Cursor Glow Effect Engine (Desktop only)
+        window.addEventListener('mousemove', (e) => {
+            const glow = document.getElementById('mouse-glow');
+            if (glow && window.innerWidth > 640) {
+                glow.style.setProperty('--mouse-x', `${e.clientX}px`);
+                glow.style.setProperty('--mouse-y', `${e.clientY}px`);
+            }
+        });
+
+        // Core Data Store (6 Case Studies with brought-back Asian Games 2018 athlete thumbnail)
+        const PROJECTS = [
+            {
+                id: 1,
+                title: 'The Bachelor Indonesia',
+                client: 'HBO Asia',
+                role: 'Post-Production Specialist',
+                category: 'Broadcast & OTT',
+                image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1000&q=80',
+                videoSrc: 'videos/vod.mp4'
+            },
+            {
+                id: 2,
+                title: 'Hafiz Indonesia 2025',
+                client: 'RCTI Network',
+                role: 'Senior Video Editor',
+                category: 'Broadcast & OTT',
+                image: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?auto=format&fit=crop&w=1000&q=80',
+                videoSrc: 'videos/broadcast.mp4'
+            },
+            {
+                id: 3,
+                title: 'Asian Games 2018 Campaigns',
+                client: 'Inasgoc International Broadcast',
+                role: 'Senior Video Editor',
+                category: 'Commercial & Brand',
+                image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1000&q=80', // Restored beautiful running track athlete thumbnail
+                videoSrc: 'videos/asiangames.mp4'
+            },
+            {
+                id: 4,
+                title: 'K-Pop ON! Spotify Campaign',
+                client: 'Spotify Global',
+                role: 'Post-Production Specialist',
+                category: 'Commercial & Brand',
+                image: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=1000&q=80', // Vibrant Pop-Culture Neon Spotify aesthetic
+                videoSrc: 'videos/campaign.mp4'
+            },
+            {
+                id: 5,
+                title: 'PON Papua XX Broadcast Center 2021',
+                client: 'National Sports Penyiaran Network',
+                role: 'Senior Video Editor',
+                category: 'Broadcast & OTT',
+                image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1000&q=80',
+                videoSrc: 'videos/pon.mp4'
+            },
+            {
+                id: 6,
+                title: 'Cinematic Look MV',
+                client: 'Independent Artist',
+                role: 'Editor & Colorist',
+                category: 'Music Video',
+                image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1000&q=80', // Moody Music Video / Concert Neon lighting
+                videoSrc: 'videos/musicvideo.mp4'
+            }
+        ];
+
+        const categories = ['All', 'Broadcast & OTT', 'Commercial & Brand', 'Music Video'];
+        let currentCategory = 'All';
+        let currentLang = 'en';
+
+        // Translation Engine Data Store (EN/ID)
+        const translations = {
+            en: {
+                heroTitle: "Integrating Broadcast Standards<br class=\"hidden sm:inline\">with Agentic AI Automation.",
+                heroSubtitle: "RL Creative Consultant • 13+ Years Television Experience • Full-Stack Media Specialist",
+                viewWork: "Examine My Frameworks",
+                letsCreate: "Optimize Your Pipeline",
+                aboutTitle: "Elevating brands through visual rhythm.",
+                aboutDesc: "With over a decade of experience across commercial, documentary, and digital platforms, we specialize in architecting narratives that demand attention. We don't just cut footage; we sculpt emotions, rhythm, and visual identity.",
+                contactTitle: "Let's Architect an Efficient<br class=\"hidden sm:inline\">Post-Production System.",
+                startProject: "Consultation Request",
+                bookNow: "Secure a Slot via Email",
+                rileyLauncher: "Chat With RiLey",
+                rileySub: "RL Executive AI Assistant",
+                rileyGreeting: "Hello. I am <strong>RiLey</strong>, the Executive AI Assistant for RL Creative Consultant. How can I assist you with your post-production pipeline or creative strategy today?",
+                rileyPlaceholder: "Ask RiLey about pipelines, budget, or bookings...",
+                rileySend: "Send"
+            },
+            id: {
+                heroTitle: "Integrasi Standar Broadcast<br class=\"hidden sm:inline\">dengan Otomasi Agen AI.",
+                heroSubtitle: "RL Creative Consultant • 1 dekade Pengalaman TV • Spesialis Otomasi Media",
+                viewWork: "Lihat Pola Kerja",
+                letsCreate: "Optimalkan Sistem Anda",
+                aboutTitle: "Meningkatkan brand melalui ritme visual.",
+                aboutDesc: "Dengan lebih dari satu dekade pengalaman di berbagai platform komersial, dokumenter, dan digital, kami spesialis dalam merancang narasi yang menarik perhatian. Kami tidak hanya memotong rekaman, kami memahat emosi, ritme, dan identitas visual.",
+                contactTitle: "Mari Bangun Sistem<br class=\"hidden sm:inline\">Pascaproduksi yang Efisien.",
+                startProject: "Permintaan Konsultasi",
+                bookNow: "Booking Jadwal via Email",
+                rileyLauncher: "Chat Dengan RiLey",
+                rileySub: "Asisten AI Eksekutif RL",
+                rileyGreeting: "Halo. Saya <strong>RiLey</strong>, Asisten AI Eksekutif untuk RL Creative Consultant. Bagaimana saya bisa membantu Anda dengan alur kerja pascaproduksi atau strategi kreatif Anda hari ini?",
+                rileyPlaceholder: "Tanya RiLey tentang pipeline, anggaran, atau pemesanan...",
+                rileySend: "Kirim"
+            }
+        };
+
+        // Render Portfolio Grid dynamically with Double-Fade Image -> Video hover mechanics
+        function renderProjects() {
+            const grid = document.getElementById('projects-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const filtered = currentCategory === 'All'
+                ? PROJECTS
+                : PROJECTS.filter(p => p.category === currentCategory);
+
+            filtered.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'group relative bg-brandCard rounded-2xl overflow-hidden border border-white/5 hover:border-purple-500/30 transition-all duration-500 flex flex-col cursor-pointer shadow-lg';
+
+                card.innerHTML = `
+                    <div class="relative aspect-video w-full overflow-hidden bg-zinc-950">
+                        <img 
+                            src="${project.image}" 
+                            alt="${project.title}" 
+                            class="absolute inset-0 w-full h-full object-cover transition-all duration-[800ms] ease-in-out group-hover:scale-105 group-hover:opacity-0"
+                            loading="lazy"
+                        />
+                        <video
+                            loop
+                            playsInline
+                            class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                        >
+                            <source src="${project.videoSrc}" type="video/mp4" />
+                        </video>
+                        <div class="absolute top-3 left-3 sm:top-4 sm:left-4 bg-black/75 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[9px] sm:text-[10px] font-mono tracking-widest uppercase text-purple-400">
+                            ${project.category}
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 sm:p-8 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] sm:text-xs font-mono text-zinc-500 tracking-wider uppercase">${project.client}</span>
+                            <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-white mt-1 sm:mt-2 group-hover:text-purple-400 transition-colors duration-300">${project.title}</h3>
+                        </div>
+                        <div class="border-t border-white/5 mt-4 sm:mt-6 pt-4 sm:pt-6 flex items-center justify-between">
+                            <span class="text-xs text-zinc-400 font-mono tracking-wide">${project.role}</span>
+                            <span class="text-xs font-mono text-purple-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">Explore &rarr;</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Trigger Instant Video Autoplay hover sequence
+            setupVideoHoverTriggers();
+        }
+
+        // Optimized Hover Event Handlers to bypass browser autoplay lockout
+        function setupVideoHoverTriggers() {
+            setTimeout(() => {
+                const projectCards = document.querySelectorAll('#projects-grid .group');
+                projectCards.forEach(card => {
+                    const video = card.querySelector('video');
+                    if (video) {
+                        // Desktop Hover Actions
+                        card.addEventListener('mouseenter', () => {
+                            video.currentTime = 0;
+                            video.muted = false; // Enable sound explicitly
+                            video.volume = 0.8;  // Audibly set volume level
+                            const playPromise = video.play();
+                            if (playPromise !== undefined) {
+                                playPromise.catch(err => {
+                                    console.log("Interactive Autoplay with sound blocked, trying muted fallback:", err);
+                                    // If unmuted play is blocked by strict browser policy, fallback to muted to guarantee animation
+                                    video.muted = true;
+                                    video.play().catch(e => console.log("Muted fallback failed:", e));
+                                });
+                            }
+                        });
+                        card.addEventListener('mouseleave', () => {
+                            video.pause();
+                        });
+
+                        // Mobile touch play fallback
+                        card.addEventListener('touchstart', () => {
+                            video.currentTime = 0;
+                            video.muted = false; // Enable sound explicitly
+                            video.volume = 0.8;
+                            video.play().catch(e => {
+                                console.log("Touchplay with sound blocked, trying muted fallback:", e);
+                                video.muted = true;
+                                video.play().catch(err => console.log("Muted mobile fallback failed:", err));
+                            });
+                        }, { passive: true });
+                    }
+                });
+            }, 50);
+        }
+
+        // Render Category Filter Tabs
+        function renderFilters() {
+            const container = document.getElementById('filter-tabs');
+            if (!container) return;
+            container.innerHTML = '';
+
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = `text-[10px] sm:text-xs font-mono tracking-widest uppercase whitespace-nowrap px-4 py-2 sm:px-5 sm:py-2.5 rounded-full transition-all duration-300 select-none ${currentCategory === cat
+                    ? 'bg-purple-600 text-white shadow-md'
+                    : 'bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white'
+                    }`;
+                btn.textContent = cat;
+                btn.addEventListener('click', () => {
+                    currentCategory = cat;
+                    renderFilters();
+                    renderProjects();
+                });
+                container.appendChild(btn);
+            });
+        }
+
+        // Toggle Dynamic Language Selector Engine
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            const data = translations[currentLang];
+
+            document.getElementById('hero-title').innerHTML = data.heroTitle;
+            document.getElementById('hero-subtitle').textContent = data.heroSubtitle;
+            document.getElementById('hero-btn-work').textContent = data.viewWork;
+            document.getElementById('hero-btn-cta').textContent = data.letsCreate;
+
+            // Restored Philosophy Section
+            document.getElementById('about-title').innerHTML = data.aboutTitle;
+            document.getElementById('about-desc').innerHTML = data.aboutDesc;
+
+            document.getElementById('contact-title').innerHTML = data.contactTitle;
+            document.getElementById('form-title').textContent = data.startProject;
+            document.getElementById('contact').querySelector('a').textContent = data.bookNow;
+
+            // Dynamically translate chatbot strings
+            const launcherText = document.querySelector('#riley-launcher span');
+            if (launcherText) launcherText.textContent = data.rileyLauncher;
+
+            const rileySub = document.querySelector('#riley-window span');
+            if (rileySub) rileySub.textContent = data.rileySub;
+
+            const rileyFormButton = document.querySelector('#riley-form button');
+            if (rileyFormButton) rileyFormButton.textContent = data.rileySend;
+
+            const rileyInput = document.getElementById('riley-input');
+            if (rileyInput) rileyInput.placeholder = data.rileyPlaceholder;
+
+            const rileyGreetingText = document.getElementById('riley-initial-text');
+            if (rileyGreetingText) rileyGreetingText.innerHTML = data.rileyGreeting;
+        }
+
+        // Action Listeners
+        const btnLang = document.getElementById('btn-lang');
+        if (btnLang) {
+            btnLang.addEventListener('click', toggleLanguage);
+        }
+
+        // RiLey Chatbot Engine Logic (Perfectly Decoupled & Wrapped)
+        function initRileyChatbot() {
+            const launcher = document.getElementById('riley-launcher');
+            const windowChat = document.getElementById('riley-window');
+            const closeBtn = document.getElementById('riley-close');
+            const chatForm = document.getElementById('riley-form');
+            const chatInput = document.getElementById('riley-input');
+            const messagesContainer = document.getElementById('riley-messages');
+
+            if (!launcher || !windowChat || !closeBtn || !chatForm || !chatInput || !messagesContainer) {
+                console.error("RiLey Chatbot: Missing core DOM elements.");
+                return;
+            }
+
+            let chatHistory = [];
+
+            // Toggle Chat Window on launcher click
+            launcher.addEventListener('click', (e) => {
+                e.stopPropagation();
+                windowChat.classList.toggle('opacity-0');
+                windowChat.classList.toggle('translate-y-4');
+                windowChat.classList.toggle('pointer-events-none');
+
+                const isOpen = !windowChat.classList.contains('opacity-0');
+                if (isOpen) {
+                    chatInput.focus();
+                }
+            });
+
+            // Close Chat Window on close button click
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                windowChat.classList.add('opacity-0');
+                windowChat.classList.add('translate-y-4');
+                windowChat.classList.add('pointer-events-none');
+            });
+
+            // Prevent clicks inside the chat window from bubbling and triggering parent body actions
+            windowChat.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
+            // Handler for Dispatching Conversation History to Backend API
+            chatForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const text = chatInput.value.trim();
+                if (!text) return;
+
+                // 1. Render user message in UI
+                appendMessage('user', text);
+                chatInput.value = '';
+
+                // 2. Append to stateful history using expected Gemini format ({ role, text })
+                chatHistory.push({ role: 'user', text });
+
+                // 3. Show typing loading state
+                const isIndo = currentLang === 'id';
+                const loadingText = isIndo ? 'RiLey sedang berpikir...' : 'RiLey is thinking...';
+                const loadingId = appendMessage('model', loadingText);
+
+                try {
+                    // 4. Send asynchronous request to Express chatbot proxy endpoint
+                    const response = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ conversation: chatHistory })
+                    });
+
+                    const data = await response.json();
+
+                    // Remove loading bubble
+                    const loadingEl = document.getElementById(loadingId);
+                    if (loadingEl) loadingEl.remove();
+
+                    if (response.ok) {
+                        appendMessage('model', data.result);
+                        chatHistory.push({ role: 'model', text: data.result });
+                    } else {
+                        const errorMsg = isIndo ? `Kesalahan Sistem: ${data.message}` : `System Error: ${data.message}`;
+                        appendMessage('model', errorMsg);
+                    }
+                } catch (err) {
+                    const loadingEl = document.getElementById(loadingId);
+                    if (loadingEl) loadingEl.remove();
+
+                    const connError = isIndo
+                        ? "Koneksi terputus. Pastikan server backend Anda berjalan."
+                        : "Connection lost. Please make sure your backend server is running.";
+                    appendMessage('model', connError);
+                    console.error(err);
+                }
+            });
+
+            // Helper to render customized chat bubbles
+            function appendMessage(role, msgText) {
+                const msgId = 'msg-' + Date.now() + Math.random().toString(36).substr(2, 5);
+                const bubble = document.createElement('div');
+
+                if (role === 'user') {
+                    bubble.className = "flex flex-col bg-purple-600 text-white rounded-xl p-3 max-w-[85%] ml-auto text-right shadow-md";
+                    bubble.innerHTML = `<p class="leading-relaxed text-xs sm:text-sm">${escapeHtml(msgText)}</p><span class="text-[9px] font-mono text-purple-200 mt-1">${currentLang === 'id' ? 'Anda' : 'You'}</span>`;
+                } else {
+                    bubble.className = "flex flex-col bg-white/5 text-gray-300 rounded-xl p-3 max-w-[85%] shadow-md border border-white/5";
+                    const formattedText = formatRileyResponse(msgText);
+                    bubble.innerHTML = `<div class="leading-relaxed text-xs sm:text-sm space-y-1.5">${formattedText}</div><span class="text-[9px] font-mono text-purple-400 mt-2">RiLey</span>`;
+                }
+
+                bubble.id = msgId;
+                messagesContainer.appendChild(bubble);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                return msgId;
+            }
+
+            function escapeHtml(text) {
+                return text
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+
+            // High-fidelity Markdown/Rich formatter for bullet points, lists, bold text, and HTML formatting
+            function formatRileyResponse(text) {
+                let formatted = escapeHtml(text);
+
+                // Bold replacement (**text** to <strong>text</strong>)
+                formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                // Bullet list formatting (* text or - text)
+                formatted = formatted.replace(/^\*\s(.*)$/gm, '<li class="ml-4 list-disc">$1</li>');
+                formatted = formatted.replace(/^-\s(.*)$/gm, '<li class="ml-4 list-disc">$1</li>');
+
+                // Numbered list formatting (1. text)
+                formatted = formatted.replace(/^\d+\.\s(.*)$/gm, '<li class="ml-4 list-decimal">$1</li>');
+
+                // Normal paragraph formatting & breaks
+                formatted = formatted.replace(/\n/g, '<br>');
+
+                return formatted;
+            }
+        }
+
+        // Document Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFilters();
+            renderProjects();
+            initRileyChatbot();
+        });
+    </script>
+</body>
+
+</html>
