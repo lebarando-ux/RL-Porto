@@ -18,8 +18,8 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.json());
 
-// Menjadikan folder utama sebagai penyedia file statis (HTML, Logo, Videos)
-app.use(express.static(__dirname));
+// Menjadikan folder public sebagai penyedia file statis (HTML, Logo, Videos)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Endpoint Utama untuk Chatbot Portofolio
 app.post('/api/chat', async (req, res) => {
@@ -73,4 +73,8 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => console.log(`RL Creative Consultant Server ready on http://localhost:${PORT}`));
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    app.listen(PORT, () => console.log(`RL Creative Consultant Server ready on http://localhost:${PORT}`));
+}
+
+export default app;
