@@ -326,7 +326,7 @@
             }
         });
 
-        // Core Data Store (6 Case Studies with brought-back Asian Games 2018 athlete thumbnail)
+        // Portfolio case studies
         const PROJECTS = [
             {
                 id: 1,
@@ -351,7 +351,7 @@
                 title: 'Asian Games 2018 Campaigns',
                 client: 'Inasgoc International Broadcast',
                 role: 'Senior Video Editor',
-                category: 'Commercial & Brand',
+                category: 'Sport Event',
                 image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1000&q=80', // Restored beautiful running track athlete thumbnail
                 videoSrc: 'videos/asiangames.mp4'
             },
@@ -369,7 +369,7 @@
                 title: 'PON XX Papua Broadcast Center 2021',
                 client: 'National Sports Penyiaran Network',
                 role: 'Senior Video Editor',
-                category: 'Broadcast & OTT',
+                category: 'Sport Event',
                 image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1000&q=80',
                 videoSrc: 'videos/pon.mp4'
             },
@@ -381,10 +381,70 @@
                 category: 'Music Video',
                 image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1000&q=80', // Moody Music Video / Concert Neon lighting
                 videoSrc: 'videos/musicvideo.mp4'
+            },
+            {
+                id: 7,
+                title: 'AI Microdrama: If You Love Me',
+                client: 'Concept / Spec Project',
+                role: 'AI-Generated Microdrama',
+                category: 'AI Generated Content',
+                image: 'images/ai-microdrama.jpg',
+                videoSrc: 'videos/AI%20Microdrama.mp4',
+                aspectRatio: '9:16'
+            },
+            {
+                id: 8,
+                title: 'AI Chocolate Product Ad',
+                client: 'Concept / Spec Project',
+                role: 'AI-Generated Commercial',
+                category: 'AI Generated Content',
+                image: 'images/ai-chocolate-ad.jpg',
+                videoSrc: 'videos/Ai%20Chocolate%20Ads.mp4',
+                aspectRatio: '9:16'
+            },
+            {
+                id: 9,
+                title: 'AI Noodle Cup Product Ad',
+                client: 'Concept / Spec Project',
+                role: 'AI-Generated Commercial',
+                category: 'AI Generated Content',
+                image: 'images/ai-noodle-cup-ad.jpg',
+                videoSrc: 'videos/Ai%20Noodle%20Cup%20Ads.mp4',
+                aspectRatio: '9:16'
+            },
+            {
+                id: 10,
+                title: 'AI Perfume Product Ad',
+                client: 'Concept / Spec Project',
+                role: 'AI-Generated Commercial',
+                category: 'AI Generated Content',
+                image: 'images/ai-perfume-ad.jpg',
+                videoSrc: 'videos/Ai%20Perfume%20Ads.mp4',
+                aspectRatio: '9:16'
+            },
+            {
+                id: 11,
+                title: 'AI Serum Product Ad',
+                client: 'Concept / Spec Project',
+                role: 'AI-Generated Commercial',
+                category: 'AI Generated Content',
+                image: 'images/ai-serum-ad.jpg',
+                videoSrc: 'videos/Ai%20Serum%20Ads.mp4',
+                aspectRatio: '9:16'
+            },
+            {
+                id: 12,
+                title: 'AI Short Animation: Air Mactha',
+                client: 'Concept / Spec Project',
+                role: 'AI-Generated Short Animation',
+                category: 'AI Generated Content',
+                image: 'images/ai-short-animation.jpg',
+                videoSrc: 'videos/ai-short-animation.mp4',
+                aspectRatio: '9:16'
             }
         ];
 
-        const categories = ['All', 'Broadcast & OTT', 'Commercial & Brand', 'Music Video'];
+        const categories = ['All', 'Broadcast & OTT', 'Commercial & Brand', 'Music Video', 'Sport Event', 'AI Generated Content'];
         let currentCategory = 'All';
         let currentLang = 'en';
 
@@ -437,9 +497,12 @@
             filtered.forEach(project => {
                 const card = document.createElement('div');
                 card.className = 'group relative bg-brandCard rounded-2xl overflow-hidden border border-white/5 hover:border-purple-500/30 transition-all duration-500 flex flex-col cursor-pointer shadow-lg';
+                const mediaStyle = project.aspectRatio === '9:16'
+                    ? 'aspect-ratio: 9 / 16; max-width: 320px; margin-inline: auto;'
+                    : 'aspect-ratio: 16 / 9;';
 
                 card.innerHTML = `
-                    <div class="relative aspect-video w-full overflow-hidden bg-zinc-950">
+                    <div class="relative w-full overflow-hidden bg-zinc-950" style="${mediaStyle}">
                         <img 
                             src="${project.image}" 
                             alt="${project.title}" 
