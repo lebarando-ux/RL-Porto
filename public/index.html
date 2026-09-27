@@ -119,8 +119,8 @@
                 <div class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></div>
                 <div>
                     <h4 class="text-sm font-bold tracking-tight text-white">RiLey</h4>
-                    <span class="text-[10px] font-mono text-gray-400 uppercase tracking-wider">RL Executive AI
-                        Assistant</span>
+                    <span class="text-[10px] font-mono text-gray-400 uppercase tracking-wider">RL Marketing
+                    Agent</span>
                 </div>
             </div>
             <button id="riley-close"
@@ -129,15 +129,14 @@
 
         <div id="riley-messages" class="flex-1 overflow-y-auto p-4 space-y-4 text-sm no-scrollbar">
             <div class="flex flex-col bg-white/5 rounded-xl p-3 max-w-[85%] text-gray-300">
-                <p id="riley-initial-text">Hello. I am <strong>RiLey</strong>, the Executive AI Assistant for RL
-                    Creative Consultant. How can I assist you with your post-production pipeline or creative strategy
-                    today?</p>
+                <p id="riley-initial-text">Hello. I’m <strong>RiLey</strong>, RL’s marketing agent. What would you
+                like to create, improve, or solve?</p>
                 <span id="riley-initial-meta" class="text-[9px] font-mono text-purple-400 mt-2">RiLey • Just now</span>
             </div>
         </div>
 
         <form id="riley-form" class="p-4 border-t border-white/10 bg-black/20 flex gap-2 rounded-b-2xl">
-            <input type="text" id="riley-input" placeholder="Ask RiLey about pipelines, budget, or bookings..."
+            <input type="text" id="riley-input" placeholder="Tell RiLey what you want to achieve..."
                 class="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
                 autocomplete="off" />
             <button type="submit"
@@ -402,9 +401,9 @@
                 startProject: "Consultation Request",
                 bookNow: "Secure a Slot via Email",
                 rileyLauncher: "Chat With RiLey",
-                rileySub: "RL Executive AI Assistant",
-                rileyGreeting: "Hello. I am <strong>RiLey</strong>, the Executive AI Assistant for RL Creative Consultant. How can I assist you with your post-production pipeline or creative strategy today?",
-                rileyPlaceholder: "Ask RiLey about pipelines, budget, or bookings...",
+                rileySub: "RL Marketing Agent",
+                rileyGreeting: "Hello. I’m <strong>RiLey</strong>, RL’s marketing agent. What would you like to create, improve, or solve?",
+                rileyPlaceholder: "Tell RiLey what you want to achieve...",
                 rileySend: "Send"
             },
             id: {
@@ -418,9 +417,9 @@
                 startProject: "Permintaan Konsultasi",
                 bookNow: "Booking Jadwal via Email",
                 rileyLauncher: "Chat Dengan RiLey",
-                rileySub: "Asisten AI Eksekutif RL",
-                rileyGreeting: "Halo. Saya <strong>RiLey</strong>, Asisten AI Eksekutif untuk RL Creative Consultant. Bagaimana saya bisa membantu Anda dengan alur kerja pascaproduksi atau strategi kreatif Anda hari ini?",
-                rileyPlaceholder: "Tanya RiLey tentang pipeline, anggaran, atau pemesanan...",
+                rileySub: "Agen Marketing RL",
+                rileyGreeting: "Halo. Saya <strong>RiLey</strong>, agen marketing RL. Apa yang ingin Anda buat, tingkatkan, atau selesaikan?",
+                rileyPlaceholder: "Ceritakan hasil yang ingin Anda capai...",
                 rileySend: "Kirim"
             }
         };
@@ -660,7 +659,14 @@
                         appendMessage('model', data.result);
                         chatHistory.push({ role: 'model', text: data.result });
                     } else {
-                        const errorMsg = isIndo ? `Kesalahan Sistem: ${data.message}` : `System Error: ${data.message}`;
+                        const isTemporarilyUnavailable = data.code === 'CHAT_TEMPORARILY_UNAVAILABLE';
+                        const errorMsg = isIndo
+                            ? isTemporarilyUnavailable
+                                ? "RiLey sedang sibuk untuk sementara. Silakan coba lagi sebentar."
+                                : "RiLey belum bisa membalas. Silakan coba lagi sebentar."
+                            : isTemporarilyUnavailable
+                                ? "RiLey is temporarily busy. Please try again in a moment."
+                                : "RiLey couldn't reply just now. Please try again in a moment.";
                         appendMessage('model', errorMsg);
                     }
                 } catch (err) {
