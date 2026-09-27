@@ -4,11 +4,5 @@
     "index.js": {
       "excludeFiles": "public/videos/**"
     }
-  },
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "/index.js"
-    }
-  ]
+  }
 }
