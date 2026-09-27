@@ -21,6 +21,22 @@ app.use(express.json());
 // Menjadikan folder public sebagai penyedia file statis (HTML, Logo, Videos)
 app.use(express.static(path.join(__dirname, 'public')));
 
+function getGreetingReply(text) {
+    const normalized = text.trim().toLowerCase().replace(/[.!?,]+$/g, '');
+    const englishGreeting = /^(hi|hello|hey|howdy)( there)?$/.test(normalized)
+        || /^(good morning|good afternoon|good evening)$/.test(normalized);
+    const indonesianGreeting = /^(halo|hai|hei|pagi|siang|sore|malam)$/.test(normalized)
+        || /^selamat (pagi|siang|sore|malam)$/.test(normalized);
+
+    if (indonesianGreeting) {
+        return 'Halo! Apa yang ingin Anda buat atau tingkatkan?';
+    }
+    if (englishGreeting) {
+        return 'Hi! What are you looking to create or improve?';
+    }
+    return null;
+}
+
 // Endpoint Utama untuk Chatbot Portofolio
 app.post('/api/chat', async (req, res) => {
     const { conversation } = req.body;
@@ -41,6 +57,14 @@ app.post('/api/chat', async (req, res) => {
             return res.status(400).json({ message: "Payload tidak valid!" });
         }
 
+        const latestMessage = conversation.at(-1);
+        if (latestMessage?.role === 'user') {
+            const greetingReply = getGreetingReply(latestMessage.text);
+            if (greetingReply) {
+                return res.status(200).json({ result: greetingReply });
+            }
+        }
+
         const contents = conversation.map(({ role, text }) => ({
             role,
             parts: [{ text }]
@@ -50,14 +74,15 @@ app.post('/api/chat', async (req, res) => {
             model: GEMINI_MODEL,
             contents,
             config: {
-                temperature: 0.4,
-                maxOutputTokens: 250,
+                temperature: 0.3,
+                maxOutputTokens: 120,
                 systemInstruction: "You are RiLey, the marketing and client-conversion agent for RL Creative Consultant, led by Principal Consultant Ryan Lebarando.\n\n" +
                     "Your goal:\n" +
                     "- Help the visitor quickly decide whether RL is a good fit.\n" +
                     "- Understand their need, create confidence, and guide qualified visitors to contact RL.\n\n" +
                     "Conversation rules:\n" +
-                    "- Be concise, clear, warm, confident, and persuasive. Prefer short paragraphs or simple bullets.\n" +
+                    "- Be concise, clear, warm, confident, and persuasive. Keep replies to 1-2 short sentences and under 35 words unless the visitor asks for detail.\n" +
+                    "- For a greeting or casual opener, greet them briefly and ask one simple question about what they need. Do not introduce the agency, list services, or give a sales pitch.\n" +
                     "- Use the visitor's language (English or Indonesian). Never mix languages unless they do.\n" +
                     "- Ask only one useful question at a time. Start by learning what they want to create, improve, or solve.\n" +
                     "- Qualify naturally: project type, desired outcome, timeline, and the main obstacle. Do not interrogate them.\n" +
