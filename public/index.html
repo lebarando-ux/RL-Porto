@@ -718,30 +718,33 @@
                     if (loadingEl) loadingEl.remove();
 
                     if (response.ok) {
-                        appendMessage('model', data.result);
-                        chatHistory.push({ role: 'model', text: data.result });
+                        if (typeof data.result === 'string' && data.result.trim()) {
+                            appendMessage('model', data.result);
+                            chatHistory.push({ role: 'model', text: data.result });
+                        } else {
+                            const fallback = getContactFallback(isIndo);
+                            appendMessage('model', fallback);
+                            chatHistory.push({ role: 'model', text: fallback });
+                        }
                     } else {
-                        const isTemporarilyUnavailable = data.code === 'CHAT_TEMPORARILY_UNAVAILABLE';
-                        const errorMsg = isIndo
-                            ? isTemporarilyUnavailable
-                                ? "RiLey sedang sibuk untuk sementara. Silakan coba lagi sebentar."
-                                : "RiLey belum bisa membalas. Silakan coba lagi sebentar."
-                            : isTemporarilyUnavailable
-                                ? "RiLey is temporarily busy. Please try again in a moment."
-                                : "RiLey couldn't reply just now. Please try again in a moment.";
+                        const errorMsg = getContactFallback(isIndo);
                         appendMessage('model', errorMsg);
                     }
                 } catch (err) {
                     const loadingEl = document.getElementById(loadingId);
                     if (loadingEl) loadingEl.remove();
 
-                    const connError = isIndo
-                        ? "Koneksi terputus. Pastikan server backend Anda berjalan."
-                        : "Connection lost. Please make sure your backend server is running.";
+                    const connError = getContactFallback(isIndo);
                     appendMessage('model', connError);
                     console.error(err);
                 }
             });
+
+            function getContactFallback(isIndo) {
+                return isIndo
+                    ? "RiLey belum bisa membalas saat ini. Silakan coba lagi atau hubungi lebarando@gmail.com untuk pertanyaan proyek dan harga."
+                    : "RiLey can’t reply right now. Please try again or email lebarando@gmail.com with project or pricing questions.";
+            }
 
             // Helper to render customized chat bubbles
             function appendMessage(role, msgText) {
@@ -785,6 +788,11 @@
 
                 // Numbered list formatting (1. text)
                 formatted = formatted.replace(/^\d+\.\s(.*)$/gm, '<li class="ml-4 list-decimal">$1</li>');
+
+                formatted = formatted.replace(
+                    /lebarando@gmail\.com/g,
+                    '<a href="mailto:lebarando@gmail.com" class="text-purple-300 underline hover:text-white">lebarando@gmail.com</a>'
+                );
 
                 // Normal paragraph formatting & breaks
                 formatted = formatted.replace(/\n/g, '<br>');
